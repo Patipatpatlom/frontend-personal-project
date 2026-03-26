@@ -3,3 +3,18 @@
   themes : light --default
 }
 
+.react-calendar {
+  background: transparent;
+  border: none;
+}
+
+.react-calendar__tile--active {
+  background: #fb923c !important;
+  color: white;
+  border-radius: 10px;
+}
+
+.react-calendar__tile:hover {
+  background: #fda4af;
+  border-radius: 10px;
+}
