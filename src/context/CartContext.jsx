@@ -2,7 +2,6 @@ import { createContext, useContext, useState } from "react";
 
 export const CartContext = createContext();
 
-// ✅ custom hook
 export const useCart = () => {
   return useContext(CartContext);
 };
@@ -12,12 +11,12 @@ export default function CartProvider({ children }) {
 
   // ✅ เพิ่มสินค้า
   const addToCart = (item) => {
-    const exist = cart.find((i) => i.cake_id === item.cake_id);
+    const exist = cart.find((i) => i.cakeId === item.cakeId);
 
     if (exist) {
       setCart(
         cart.map((i) =>
-          i.cake_id === item.cake_id
+          i.cakeId === item.cakeId
             ? { ...i, quantity: i.quantity + 1 }
             : i
         )
@@ -29,7 +28,7 @@ export default function CartProvider({ children }) {
 
   // ❌ ลบสินค้า
   const removeFromCart = (id) => {
-    setCart(cart.filter((item) => item.cake_id !== id));
+    setCart(cart.filter((item) => item.cakeId !== id));
   };
 
   // 💰 รวมราคา
