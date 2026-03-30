@@ -5,9 +5,9 @@ import { useCart } from "../context/CartContext";
 const BASE_URL = "http://localhost:5000";
 
 
-export default function CakeShop() {
+export default function CakeShop(props) {
     const [cakes, setCakes] = useState([]);
-    
+ 
     useEffect(() => {
         getCakes();
     }, []);

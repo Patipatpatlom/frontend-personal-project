@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCart } from "../context/CartContext";
 
 // --- Header Component ---
-const Header = () => (
-  <header className="sticky top-0 left-0 right-0 bg-white/70 backdrop-blur-md z-50 px-6 py-4 shadow-sm border-b border-pink-100 flex items-center justify-between">
-    <div className="flex items-center gap-3">
-      <h1 className="text-3xl font-bold font-['Pacifico',cursive] text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-pink-600">
-        Real or Cake?
-      </h1>
-    </div>
-    <nav className="flex items-center gap-6 text-gray-700 font-medium">
-      {['Home', 'Cake', 'Shop', 'Contact'].map(link => (
-        <a key={link} href="#" className="hover:text-pink-500 transition">{link}</a>
-      ))}
-    </nav>
-    <div className="flex items-center gap-4 text-xl">👤 🛒</div>
-  </header>
-);
+// const Header = () => (
+//   <header className="sticky top-0 left-0 right-0 bg-white/70 backdrop-blur-md z-50 px-6 py-4 shadow-sm border-b border-pink-100 flex items-center justify-between">
+//     <div className="flex items-center gap-3">
+//       <h1 className="text-3xl font-bold font-['Pacifico',cursive] text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-pink-600">
+//         Real or Cake?
+//       </h1>
+//     </div>
+//     <nav className="flex items-center gap-6 text-gray-700 font-medium">
+//       {['Home', 'Cake', 'Shop', 'Contact'].map(link => (
+//         <a key={link} href="#" className="hover:text-pink-500 transition">{link}</a>
+//       ))}
+//     </nav>
+//     <div className="flex items-center gap-4 text-xl">👤 🛒</div>
+//   </header>
+// );
+
+
 
 const CustomCake = () => {
   const location = useLocation();
@@ -25,6 +28,9 @@ const CustomCake = () => {
   
   // ✅ ดึงข้อมูลเค้กที่ถูกส่งมาจากหน้า Shop
   const { cake, date, time } = location.state || {}; 
+    console.log(cake.name)
+
+  const { addToCart } = useCart();
 
   const [selectedSize, setSelectedSize] = useState('M'); 
   const [cakeDecor, setCakeDecor] = useState(true); 
@@ -34,7 +40,7 @@ const CustomCake = () => {
 
   // --- 💰 Calculation Logic ---
   const basePrice = cake?.price || 850;
-  const sizeSurcharge = selectedSize === 'SS' ? -100 : selectedSize === 'L' ? 200 : 0;
+  const sizeSurcharge = selectedSize === 'SS' ? -50 : selectedSize === 'L' ? 200 : 0;
   const totalPrice = (basePrice + sizeSurcharge) * quantity;
 
   const sizes = [
@@ -45,28 +51,31 @@ const CustomCake = () => {
   const presetTexts = ['ไม่เขียนข้อความ', 'hbd', 'love you', 'happy valentine', 'make a wish', 'Custom'];
 
   const handleConfirm = (e) => {
-    e.preventDefault();
-    const finalOrder = {
-      cakeId: cake?.id,
-      cakeName: cake?.name || "Vintage Cake",
-      image: cake?.image,
-      size: selectedSize,
-      text: selectedPresetText === 'Custom' ? customText : selectedPresetText,
-      quantity,
-      totalPrice,
-      pickupDate: date,
-      pickupTime: time
-    };
+  e.preventDefault();
 
-    console.log("Final Order Ready:", finalOrder);
-    
-    // ✅ นำทางไปหน้าชำระเงินพร้อมส่งข้อมูลออเดอร์
-    navigate('/payment', { state: { order: finalOrder } });
+  const finalOrder = {
+    cakeId: cake?.id,
+    cakeName: cake?.name,
+    image: cake?.image,
+    size: selectedSize,
+    text: selectedPresetText === "Custom" ? customText : selectedPresetText,
+    quantity,
+    totalPrice,
+    pickupDate: date,
+    pickupTime: time,
   };
+ 
+console.log(cake.name)
+  console.log("ADD TO CART:", finalOrder);
+
+  addToCart(finalOrder); // 🔥 สำคัญที่สุด
+
+  navigate("/cart", { state: { order: finalOrder } });
+};
 
   return (
     <div className="min-h-screen bg-[#FFF5F7] font-sans">
-      <Header />
+      {/* <Header /> */}
 
       <main className="max-w-7xl mx-auto pt-10 px-6 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         

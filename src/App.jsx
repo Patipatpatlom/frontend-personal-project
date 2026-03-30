@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
-import CartProvider from "./context/CartContext";
+import { CartProvider } from "./context/CartContext";
 import Navbar from "./components/Navbar";
 
 import CartPage from "./pages/CartPage";
@@ -146,6 +146,7 @@ export default function App() {
     fetchMe();
   }, []);
 
+
   // ================= LOADING =================
   if (checkingAuth) {
     return (
@@ -237,7 +238,7 @@ export default function App() {
           {/* SHOP */}
           <Route
             path="/shop"
-            element={user ? <VintageCakeShop /> : <Navigate to="/login" />}
+            element={user ? <VintageCakeShop user = {user} /> : <Navigate to="/login" />}
           />
 
           {/* CUSTOM */}

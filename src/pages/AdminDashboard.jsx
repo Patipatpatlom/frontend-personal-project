@@ -8,12 +8,21 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const token = localStorage.getItem("token");
+  // ===================== GET TOKEN =====================
+  const getToken = () => localStorage.getItem("token");
 
   // ===================== FETCH ORDERS =====================
   const fetchOrders = async () => {
     try {
+      setError("");
       setLoading(true);
+
+      const token = getToken();
+
+      if (!token) {
+        setError("No token found 💀 (login first)");
+        return;
+      }
 
       const res = await axios.get(`${BASE_URL}/api/orders`, {
         headers: {
@@ -23,6 +32,7 @@ export default function AdminDashboard() {
 
       setOrders(res.data);
     } catch (err) {
+      console.log(err);
       setError("Failed to load orders 💀");
     } finally {
       setLoading(false);
@@ -32,6 +42,8 @@ export default function AdminDashboard() {
   // ===================== UPDATE STATUS =====================
   const updateStatus = async (orderId, status) => {
     try {
+      const token = getToken();
+
       await axios.patch(
         `${BASE_URL}/api/orders/${orderId}`,
         { status },
@@ -42,9 +54,16 @@ export default function AdminDashboard() {
         }
       );
 
-      fetchOrders();
+      // 🔥 optimistic refresh
+      setOrders((prev) =>
+        prev.map((o) =>
+          o.id === orderId ? { ...o, status } : o
+        )
+      );
+
     } catch (err) {
       alert("Update failed 💀");
+      console.log(err);
     }
   };
 
@@ -54,7 +73,7 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="p-10 text-xl font-bold">
+      <div className="p-10 text-xl font-bold animate-pulse">
         Loading admin dashboard 💀...
       </div>
     );
@@ -70,7 +89,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      
+
       {/* HEADER */}
       <h1 className="text-3xl font-bold mb-6">
         👑 Admin Dashboard
@@ -92,6 +111,7 @@ export default function AdminDashboard() {
             {orders.map((order) => (
               <tr key={order.id} className="border-b">
                 <td className="p-3">{order.id}</td>
+
                 <td className="p-3">
                   {order.user?.username || "Unknown"}
                 </td>
@@ -103,9 +123,10 @@ export default function AdminDashboard() {
                 </td>
 
                 <td className="p-3 flex gap-2">
+
                   <button
                     onClick={() =>
-                      updateStatus(order.id, "PENDING")
+                      updateStatus(order.id, "pending")
                     }
                     className="px-3 py-1 bg-yellow-400 rounded"
                   >
@@ -114,7 +135,7 @@ export default function AdminDashboard() {
 
                   <button
                     onClick={() =>
-                      updateStatus(order.id, "SHIPPED")
+                      updateStatus(order.id, "shipped")
                     }
                     className="px-3 py-1 bg-blue-500 text-white rounded"
                   >
@@ -123,12 +144,13 @@ export default function AdminDashboard() {
 
                   <button
                     onClick={() =>
-                      updateStatus(order.id, "DONE")
+                      updateStatus(order.id, "completed")
                     }
                     className="px-3 py-1 bg-green-500 text-white rounded"
                   >
                     Done
                   </button>
+
                 </td>
               </tr>
             ))}

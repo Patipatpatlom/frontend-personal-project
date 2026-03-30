@@ -15,7 +15,7 @@ export default function Navbar({ user, setUser }) {
     setUser(null);
     navigate("/login");
   };
-
+console.log(cart)
   return (
     <div className="navbar bg-white/60 backdrop-blur-md shadow-lg px-6 sticky top-0 z-50 border-b border-pink-100">
 

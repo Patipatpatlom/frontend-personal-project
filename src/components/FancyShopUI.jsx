@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Trash2, ShoppingCart, Moon, Sun } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 
 // 🔥 ใช้ component นี้ไปใส่ในหน้า /shop (VintageCakeShop)
 const API = "http://localhost:5000/api/desserts";
 
-export default function FancyShopUI() {
+export default function FancyShopUI(props) {
   const [desserts, setDesserts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
@@ -20,7 +22,10 @@ export default function FancyShopUI() {
     category: "",
   });
   const [editing, setEditing] = useState(null);
-
+  const location = useLocation()
+  const {date, time} = location.state|| {}
+console.log(props.user.user)
+const role = props.user.user.role
   const fetchDesserts = async () => {
     try {
       const res = await axios.get(API);
@@ -44,10 +49,17 @@ export default function FancyShopUI() {
     setToast("Deleted item 💀");
     fetchDesserts();
   };
-
+const navigate = useNavigate()
   const addToCart = (item, e) => {
     setCart((prev) => [...prev, item]);
     setToast("Added to cart 🛒");
+    navigate("/custom", {
+  state: {
+    cake: item,
+    date,
+    time
+  }
+});
 
     // 🔥 flying animation origin
     const rect = e.currentTarget.getBoundingClientRect();
@@ -133,7 +145,7 @@ p-8"
         )}
 
         {/* GRID */}
-        <div className="mb-10 p-6 rounded-3xl bg-white/70 backdrop-blur-lg shadow-xl">
+        {role === "ADMIN"&& <div className="mb-10 p-6 rounded-3xl bg-white/70 backdrop-blur-lg shadow-xl">
           <h2 className="text-2xl font-bold text-pink-500 mb-4">➕ Add Cake</h2>
 
           <div className="grid md:grid-cols-4 gap-4">
@@ -210,7 +222,7 @@ p-8"
           >
             Add Cake 🎂
           </button>
-        </div>
+        </div>}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {desserts.map((item, i) => (
             <motion.div
@@ -247,19 +259,23 @@ p-8"
                   >
                     Add
                   </button>
-                  <button
+                 { role === "ADMIN"&&<button
                     onClick={() => setEditing(item)}
                     className="btn btn-xs btn-warning"
                   >
                     Edit
-                  </button>
-                  <button
+                  </button>}
+                  
+                
+                  { role ==="ADMIN"&&<button
                     onClick={() => handleDelete(item.id)}
                     className="btn btn-sm btn-error flex items-center gap-1"
                   >
                     <Trash2 size={16} />
                     Delete
-                  </button>
+                  </button>}
+
+
                 </div>
               </div>
             </motion.div>
