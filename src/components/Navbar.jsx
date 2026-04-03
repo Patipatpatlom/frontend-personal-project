@@ -21,10 +21,33 @@ console.log(cart)
 
       {/* LOGO */}
       <div className="flex-1">
-        <Link to="/home" className="text-2xl font-bold text-pink-500">
-          🍰 Real or Cake
-        </Link>
+  <Link to="/home">
+    <div className="relative group w-fit">
+      
+      {/* ✨ glow background */}
+      <div className="absolute -inset-1 bg-gradient-to-r from-pink-400 via-rose-400 to-purple-400 blur opacity-30 group-hover:opacity-70 transition duration-500 rounded-full"></div>
+
+      {/* 🎂 logo */}
+      <div className="relative flex items-center gap-2 px-3 py-1 rounded-full bg-white/70 backdrop-blur-md shadow-md">
+        
+        {/* 🍰 icon animation */}
+        <span className="text-2xl group-hover:rotate-12 group-hover:scale-110 transition duration-300">
+          🍰
+        </span>
+
+        {/* 💖 text */}
+        <span className="text-2xl font-extrabold bg-gradient-to-r from-pink-500 via-rose-400 to-purple-400 bg-clip-text text-transparent tracking-wide">
+          Real or Cake?
+        </span>
+
+        {/* ✨ sparkle */}
+        <span className="absolute -top-2 -right-2 text-sm opacity-0 group-hover:opacity-100 group-hover:animate-ping">
+          ✨
+        </span>
       </div>
+    </div>
+  </Link>
+</div>
 
       {/* MENU */}
       <div className="flex items-center gap-6 text-sm">
@@ -43,12 +66,12 @@ console.log(cart)
           Shop
         </Link>
 
-        <Link
+        {/* <Link
           to="/custom"
           className={isActive("/custom") ? "text-pink-500 font-bold" : ""}
         >
           Custom
-        </Link>
+        </Link> */}
 
         {/* 💀 MY ORDERS */}
         <Link

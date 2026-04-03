@@ -1,30 +1,40 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDateTime, useUserStore } from "../context/useDateTime";
 
 export default function Home() {
   const navigate = useNavigate();
 
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const user = useUserStore(state=>state.user)
+  console.log(user)
+
+  const selectedDate = useDateTime((state) => state.selectedDate);
+  const selectedTime = useDateTime((state) => state.selectedTime);
+  const setSelectedDate = useDateTime((state) => state.setSelectedDate);
+  const setSelectedTime = useDateTime((state) => state.setSelectedTime);
+  const isLoading = useDateTime((state)=>state.isLoading)
+  const setIsLoading = useDateTime((state)=>state.setIsLoading)
 
   const today = new Date();
   const [viewDate, setViewDate] = useState(
-    new Date(today.getFullYear(), today.getMonth(), 1)
+    new Date(today.getFullYear(), today.getMonth(), 1),
   );
 
   // 📅 วันในเดือน
   const getDaysInMonth = (date) => {
     return Array.from(
-      { length: new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate() },
-      (_, i) => i + 1
+      {
+        length: new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(),
+      },
+      (_, i) => i + 1,
     );
   };
 
   // 🔄 เปลี่ยนเดือน
   const changeMonth = (offset) => {
     setViewDate(
-      new Date(viewDate.getFullYear(), viewDate.getMonth() + offset, 1)
+      new Date(viewDate.getFullYear(), viewDate.getMonth() + offset, 1),
     );
     setSelectedDate(null);
     setSelectedTime(null);
@@ -44,15 +54,13 @@ export default function Home() {
   };
 
   return (
-    <div className="h-screen w-full flex flex-col items-center p-6 bg-[#FFF5F7]">
-      
+    <div className="h-screen w-full flex flex-col items-center p-6 bg-[url('/src/assets/cake.png')] bg-accent-content">
       {/* HEADER */}
       <h1 className="text-4xl font-black text-[#d00050] mb-10">
         Real or Cake?
       </h1>
 
       <div className="flex flex-col md:flex-row gap-8">
-        
         {/* 📅 CALENDAR */}
         <div className="bg-white/60 backdrop-blur-xl p-8 rounded-[40px] shadow-xl">
           <div className="flex justify-between mb-4">
@@ -108,7 +116,7 @@ export default function Home() {
       </div>
 
       {/* 🎂 LOADING */}
-      {selectedTime && (
+      {isLoading && (
         <div className="fixed inset-0 bg-white/80 flex items-center justify-center">
           <motion.div
             animate={{ rotate: 360 }}

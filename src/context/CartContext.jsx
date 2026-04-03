@@ -7,7 +7,7 @@ export const CartProvider = ({ children }) => {
     // ✅ โหลดจาก localStorage
     const saved = localStorage.getItem("cart");
     return saved ? JSON.parse(saved) : [];
-  });
+  })
 
   // 💾 save ทุกครั้งที่ cart เปลี่ยน
   useEffect(() => {
@@ -33,7 +33,7 @@ export const CartProvider = ({ children }) => {
 
   // ❌ remove
   const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((i) => i.cake_id !== id));
+    setCart((prev) => prev.filter((_,i) => i !== id));
   };
 
   // 🧹 clear cart

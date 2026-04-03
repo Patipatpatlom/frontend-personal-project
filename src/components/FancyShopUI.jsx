@@ -103,7 +103,8 @@ const navigate = useNavigate()
 bg-gradient-to-br 
 from-pink-100 via-pink-200 to-pink-300 
 dark:from-pink-300 dark:via-pink-200 dark:to-pink-300
-p-8"
+p-8
+w-full bg-[url('/src/assets/cake.png')] bg-cover"
       >
         {/* HEADER */}
         <motion.div

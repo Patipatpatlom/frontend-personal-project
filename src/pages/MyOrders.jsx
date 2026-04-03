@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { div } from "framer-motion/client";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -41,6 +42,7 @@ export default function MyOrders() {
   }
 
   return (
+    <div className="h-screen w-full bg-[url('/src/assets/cake.png')] bg-accent-content" >
     <div className="p-10">
       <h1 className="text-3xl font-bold text-pink-500 mb-6">
         🍰 My Orders
@@ -68,13 +70,14 @@ export default function MyOrders() {
             <div className="mt-2">
               {(order.items || []).map((item) => (
                 <div key={item.id}>
-                  🍰 {item.cake?.name || "Cake"} x {item.quantity}
+                  🍰 {item.cakeId?.name || "Cake"} x {item.quantity}
                 </div>
               ))}
             </div>
           </div>
         ))
       )}
-    </div>
+    </div></div>
+
   );
 }
