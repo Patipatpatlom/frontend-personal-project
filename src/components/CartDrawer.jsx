@@ -1,9 +1,11 @@
-import { useCart } from "../context/CartContext";
+import { useCartStore } from "../store/useCartStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 export default function CartDrawer({ isOpen, setIsOpen }) {
-  const { cart, removeFromCart, totalPrice } = useCart();
+  const cart = useCartStore((state) => state.cart);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const totalPrice = useCartStore((state) => state.getTotalPrice());
   const navigate = useNavigate();
 
   return (

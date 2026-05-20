@@ -1,60 +1,21 @@
-import { createContext, useContext, useEffect, useState } from "react";
-
-const CartContext = createContext();
+import React from "react";
+import { useCartStore } from "../store/useCartStore";
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(() => {
-    // ✅ โหลดจาก localStorage
-    const saved = localStorage.getItem("cart");
-    return saved ? JSON.parse(saved) : [];
-  })
+  return <>{children}</>;
+};
 
-  // 💾 save ทุกครั้งที่ cart เปลี่ยน
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+export const useCart = () => {
+  const cart = useCartStore((state) => state.cart);
+  const addToCart = useCartStore((state) => state.addToCart);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const clearCart = useCartStore((state) => state.clearCart);
 
-  // ➕ add to cart
-  const addToCart = (item) => {
-    setCart((prev) => {
-      const exist = prev.find((i) => i.cakeId === item.cakeId);
-
-      if (exist) {
-        return prev.map((i) =>
-          i.cakeId === item.cakeId
-            ? { ...i, quantity: i.quantity + 1 }
-            : i
-        );
-      }
-
-      return [...prev, { ...item, quantity: 1 }];
-    });
-  };
-
-  // ❌ remove
-  const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((_,i) => i !== id));
-  };
-
-  // 🧹 clear cart
-  const clearCart = () => {
-    setCart([]);
-    localStorage.removeItem("cart");
-  };
-
-  // 💰 total
+  // Compute total price reactively using either custom cake totalPrice or dessert price
   const totalPrice = cart.reduce(
-    (sum, item) => sum + (item.price ?? 0) * (item.quantity ?? 1),
+    (sum, item) => sum + (item.totalPrice ?? (item.price ?? 0)) * (item.quantity ?? 1),
     0
   );
 
-  return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, clearCart, totalPrice }}
-    >
-      {children}
-    </CartContext.Provider>
-  );
+  return { cart, addToCart, removeFromCart, clearCart, totalPrice };
 };
-
-export const useCart = () => useContext(CartContext);

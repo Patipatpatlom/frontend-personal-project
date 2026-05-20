@@ -1,11 +1,11 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useCart } from "../context/CartContext";
+import { useCartStore } from "../store/useCartStore";
 
 export default function Navbar({ user, setUser }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { cart } = useCart();
+  const cart = useCartStore((state) => state.cart);
 
   const isActive = (path) => location.pathname === path;
 

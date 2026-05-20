@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "../context/CartContext";
+import { useCartStore } from "../store/useCartStore";
 import { useDateTime } from "../context/useDateTime";
 
 // --- Header Component ---
@@ -29,7 +29,7 @@ const CustomCake = () => {
   const { cake } = location.state || {};
 
 
-  const { addToCart } = useCart();
+  const addToCart = useCartStore((state) => state.addToCart);
 
   const selectedDate = useDateTime((state) => state.selectedDate);
   const selectedTime = useDateTime((state) => state.selectedTime);

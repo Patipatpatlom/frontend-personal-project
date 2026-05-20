@@ -1,10 +1,11 @@
-import { useCart } from "../context/CartContext";
+import { useCartStore } from "../store/useCartStore";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion"; // 🌟 เพิ่ม import Framer Motion
 
 export default function PaymentSelect() {
-  const { cart, totalPrice } = useCart();
+  const cart = useCartStore((state) => state.cart);
+  const totalPrice = useCartStore((state) => state.getTotalPrice());
   const navigate = useNavigate();
 
   // ==========================================

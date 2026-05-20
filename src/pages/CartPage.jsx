@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { useCart } from "../context/CartContext";
+import { useCartStore } from "../store/useCartStore";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUserStore } from "../context/useDateTime";
 
 export default function CartPage() {
-    
-      const { cart, removeFromCart, clearCart } = useCart();
+  const cart = useCartStore((state) => state.cart);
+  const removeFromCart = useCartStore((state) => state.removeFromCart);
+  const clearCart = useCartStore((state) => state.clearCart);
     
     const location = useLocation()
     const { order } = location.state || {};
@@ -55,7 +56,7 @@ export default function CartPage() {
           items: cart.map((item) => ({
             cakeId: item.cakeId,
             quantity: item.quantity ?? 1,
-            // status: item.Status
+            
           })),
         }),
       });

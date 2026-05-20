@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useCart } from "../context/CartContext";
 
 const BASE_URL = "http://localhost:5000";
 
