@@ -30,29 +30,23 @@ export default function AddCakeForm({ form, setForm, onAdd, setToast }) {
           <input
             type="file"
             className="file-input file-input-bordered w-full"
-            onChange={async (e) => {
+            onChange={(e) => {
               const file = e.target.files[0];
               if (!file) return;
 
-              const formData = new FormData();
-              formData.append("image", file);
-
-              try {
-                const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
-                const res = await axios.post(
-                  `${BASE}/api/desserts/upload`,
-                  formData
-                );
-                console.log("UPLOAD RESULT:", res.data);
+              const reader = new FileReader();
+              reader.onload = (event) => {
                 setForm((prev) => ({
                   ...prev,
-                  image: res.data.image,
+                  image: event.target.result,
                 }));
                 setToast("Uploaded 📸");
-              } catch (err) {
+              };
+              reader.onerror = (err) => {
                 console.error(err);
                 setToast("Upload failed 💀");
-              }
+              };
+              reader.readAsDataURL(file);
             }}
           />
 
