@@ -36,11 +36,42 @@ export default function AddCakeForm({ form, setForm, onAdd, setToast }) {
 
               const reader = new FileReader();
               reader.onload = (event) => {
-                setForm((prev) => ({
-                  ...prev,
-                  image: event.target.result,
-                }));
-                setToast("Uploaded 📸");
+                const img = new Image();
+                img.onload = () => {
+                  const canvas = document.createElement("canvas");
+                  let width = img.width;
+                  let height = img.height;
+
+                  // Resize image to max 800px width/height
+                  const MAX_SIZE = 800;
+                  if (width > height) {
+                    if (width > MAX_SIZE) {
+                      height *= MAX_SIZE / width;
+                      width = MAX_SIZE;
+                    }
+                  } else {
+                    if (width > MAX_SIZE || height > MAX_SIZE) {
+                      width *= MAX_SIZE / height;
+                      height = MAX_SIZE;
+                    }
+                  }
+
+                  canvas.width = width;
+                  canvas.height = height;
+
+                  const ctx = canvas.getContext("2d");
+                  ctx.drawImage(img, 0, 0, width, height);
+
+                  // Compress image to JPEG with 0.7 quality
+                  const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+
+                  setForm((prev) => ({
+                    ...prev,
+                    image: compressedBase64,
+                  }));
+                  setToast("Uploaded 📸");
+                };
+                img.src = event.target.result;
               };
               reader.onerror = (err) => {
                 console.error(err);
