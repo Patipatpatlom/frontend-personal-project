@@ -38,8 +38,9 @@ export default function AddCakeForm({ form, setForm, onAdd, setToast }) {
               formData.append("image", file);
 
               try {
+                const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
                 const res = await axios.post(
-                  "http://localhost:5000/api/desserts/upload",
+                  `${BASE}/api/desserts/upload`,
                   formData
                 );
                 console.log("UPLOAD RESULT:", res.data);

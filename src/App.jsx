@@ -42,7 +42,8 @@ export default function App() {
         return;
       }
       try {
-        const res = await axios.get("http://localhost:5000/api/auth/me", {
+        const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const res = await axios.get(`${baseURL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data.user);

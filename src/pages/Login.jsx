@@ -28,7 +28,8 @@ export default function Login({ setUser, setRole }) {
     }
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", form);
+      const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const res = await axios.post(`${BASE}/api/auth/login`, form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       login({ user: res.data.user, token: res.data.token });
@@ -80,7 +81,8 @@ export default function Login({ setUser, setRole }) {
     }
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/auth/register", form);
+      const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      await axios.post(`${BASE}/api/auth/register`, form);
       alert("สมัครสมาชิกสำเร็จ 🎉");
       setIsLogin(true);
     } catch (err) {

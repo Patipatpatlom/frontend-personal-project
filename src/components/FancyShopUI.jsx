@@ -10,7 +10,7 @@ import AddCakeForm from "./AddCakeForm";
 import EditCakeModal from "./EditCakeModal";
 import CakeCard from "./CakeCard";
 
-const API = "http://localhost:5000/api/desserts";
+const API = (import.meta.env.VITE_API_URL || "http://localhost:5000") + "/api/desserts";
 
 export default function FancyShopUI(props) {
   const [desserts, setDesserts] = useState([]);

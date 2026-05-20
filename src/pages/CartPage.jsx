@@ -45,7 +45,8 @@ export default function CartPage() {
     try {
       const token = user.token
 
-      const res = await fetch("http://localhost:5000/api/orders", {
+      const BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const res = await fetch(`${BASE}/api/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
