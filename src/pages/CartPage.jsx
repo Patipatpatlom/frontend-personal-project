@@ -34,7 +34,7 @@ export default function CartPage() {
 
   // 🧠 กันพัง + คำนวณ total
   const totalPrice = (cart ?? []).reduce((sum, item) => {
-    return sum + (item.totalPrice ?? 0) * (item.quantity ?? 1);
+    return sum + (item.totalPrice ?? (item.price ?? 0) * (item.quantity ?? 1));
   }, 0);
 // console.log(totalPrice)
   // 💳 CHECKOUT
@@ -57,7 +57,7 @@ export default function CartPage() {
           items: cart.map((item) => ({
             cakeId: item.cakeId,
             quantity: item.quantity ?? 1,
-            
+            price: item.price ?? (item.totalPrice / (item.quantity ?? 1)),
           })),
         }),
       });
@@ -133,7 +133,7 @@ export default function CartPage() {
 
           {/* ราคาและจำนวน */}
           <p className="text-sm font-medium text-gray-500">
-            {item.quantity ?? 1} x {(item.totalPrice ?? 0).toLocaleString()} บาท
+            {item.quantity ?? 1} x {(item.price ?? (item.totalPrice / (item.quantity ?? 1))).toLocaleString()} บาท
           </p>
         </div>
       </div>

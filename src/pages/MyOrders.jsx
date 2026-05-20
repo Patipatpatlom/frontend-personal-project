@@ -208,11 +208,16 @@ export default function MyOrders() {
                         className="flex justify-between items-center bg-white p-3 rounded-2xl shadow-sm border border-gray-100"
                       >
                         <span className="font-bold text-gray-700 text-sm flex items-center gap-2">
-                          🍰 {item.cakeId?.name || "Premium Custom Cake"}
+                          🍰 {item.cake?.name || "Premium Custom Cake"}
                         </span>
-                        <span className="text-xs font-extrabold text-pink-600 bg-pink-50 px-3 py-1 rounded-full shadow-inner border border-pink-100">
-                          Qty: {item.quantity}
-                        </span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-extrabold text-pink-600 bg-pink-50 px-3 py-1 rounded-full shadow-inner border border-pink-100">
+                            ฿{(item.price || 0).toLocaleString()}
+                          </span>
+                          <span className="text-xs font-extrabold text-gray-600 bg-gray-50 px-3 py-1 rounded-full shadow-inner border border-gray-100">
+                            Qty: {item.quantity}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
