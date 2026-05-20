@@ -22,7 +22,7 @@ export default function CakeShop(props) {
           <div key={cake.id} className="bg-white p-4 rounded-xl shadow">
 
           <img
-            src={`${BASE_URL}${cake.image}`}
+            src={cake.image}
             className="h-40 w-full object-cover rounded-lg"
             />
 
