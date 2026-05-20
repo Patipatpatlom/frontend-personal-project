@@ -273,49 +273,47 @@ export default function AdminDashboard() {
                           </span>
                         </td>
 
-                        <td className="p-5 flex gap-2 justify-center items-center">
-                          {formatStatus(order.status) === "COMPLETED" ? (
-                            /* Delete Button (Only for Completed orders) */
+                        <td className="p-5 flex gap-2 justify-center items-center flex-wrap">
+                          {/* Pending Button */}
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => updateStatus(order.id, "pending")}
+                            className="px-4 py-2 text-xs font-black bg-amber-400 hover:bg-amber-500 text-slate-800 rounded-2xl shadow-md border-none transition-all"
+                          >
+                            Pending
+                          </motion.button>
+
+                          {/* Shipped Button */}
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => updateStatus(order.id, "shipped")}
+                            className="px-4 py-2 text-xs font-black bg-blue-500 hover:bg-blue-600 text-white rounded-2xl shadow-md border-none transition-all"
+                          >
+                            Shipped
+                          </motion.button>
+
+                          {/* Done/Completed Button */}
+                          <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => updateStatus(order.id, "completed")}
+                            className="px-4 py-2 text-xs font-black bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-md border-none transition-all"
+                          >
+                            Done
+                          </motion.button>
+
+                          {/* Delete Button (Only for Completed orders) */}
+                          {formatStatus(order.status) === "COMPLETED" && (
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleDeleteOrder(order.id)}
-                              className="px-4 py-2 text-xs font-black bg-rose-500 hover:bg-rose-600 text-white rounded-2xl shadow-md border-none transition-all flex items-center gap-1"
+                              className="px-4 py-2 text-xs font-black bg-rose-500 hover:bg-rose-600 text-white rounded-2xl shadow-md border-none transition-all flex items-center gap-1 ml-2"
                             >
                               Delete 🗑️
                             </motion.button>
-                          ) : (
-                            <>
-                              {/* Pending Button */}
-                              <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => updateStatus(order.id, "pending")}
-                                className="px-4 py-2 text-xs font-black bg-amber-400 hover:bg-amber-500 text-slate-800 rounded-2xl shadow-md border-none transition-all"
-                              >
-                                Pending
-                              </motion.button>
-
-                              {/* Shipped Button */}
-                              <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => updateStatus(order.id, "shipped")}
-                                className="px-4 py-2 text-xs font-black bg-blue-500 hover:bg-blue-600 text-white rounded-2xl shadow-md border-none transition-all"
-                              >
-                                Shipped
-                              </motion.button>
-
-                              {/* Done/Completed Button */}
-                              <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => updateStatus(order.id, "completed")}
-                                className="px-4 py-2 text-xs font-black bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-md border-none transition-all"
-                              >
-                                Done
-                              </motion.button>
-                            </>
                           )}
                         </td>
                       </motion.tr>
