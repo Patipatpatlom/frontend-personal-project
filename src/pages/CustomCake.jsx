@@ -62,7 +62,6 @@ const CustomCake = () => {
   const handleConfirm = (e) => {
     e.preventDefault();
 
-    const unitPrice = basePrice + sizeSurcharge;
     const finalOrder = {
       cakeId: cake?.id,
       cakeName: cake?.name,
@@ -70,7 +69,6 @@ const CustomCake = () => {
       size: selectedSize,
       text: selectedPresetText === "Custom" ? customText : selectedPresetText,
       quantity,
-      price: unitPrice,
       totalPrice,
       pickupDate: selectedDate,
       pickupTime: selectedTime,

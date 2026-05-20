@@ -75,6 +75,27 @@ export default function AdminDashboard() {
     }
   };
 
+  // ===================== DELETE ORDER =====================
+  const handleDeleteOrder = async (orderId) => {
+    if (!window.confirm(`Are you sure you want to delete Order #${orderId}? 🗑️`)) {
+      return;
+    }
+    try {
+      const token = getToken();
+      await axios.delete(`${BASE_URL}/api/orders/${orderId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Remove from state
+      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+    } catch (err) {
+      alert(err.response?.data?.message || "Delete failed 💀");
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
 
@@ -91,15 +112,22 @@ export default function AdminDashboard() {
     };
   }, []);
 
+  const formatStatus = (status) => {
+    const upper = (status || "PENDING").toUpperCase();
+    if (upper === "SUCCESS") return "COMPLETED";
+    if (upper === "WAITING") return "SHIPPED";
+    return upper;
+  };
+
   // Summary Metrics Calculations
   const totalCount = orders.length;
-  const pendingCount = orders.filter((o) => o.status === "PENDING").length;
-  const shippedCount = orders.filter((o) => o.status === "SHIPPED").length;
-  const completedCount = orders.filter((o) => o.status === "COMPLETED").length;
+  const pendingCount = orders.filter((o) => formatStatus(o.status) === "PENDING").length;
+  const shippedCount = orders.filter((o) => formatStatus(o.status) === "SHIPPED").length;
+  const completedCount = orders.filter((o) => formatStatus(o.status) === "COMPLETED").length;
 
   const getStatusStyle = (status) => {
-    const upper = (status || "PENDING").toUpperCase();
-    switch (upper) {
+    const formatted = formatStatus(status);
+    switch (formatted) {
       case "COMPLETED":
         return "bg-emerald-100 text-emerald-700 border border-emerald-300 font-extrabold shadow-sm";
       case "SHIPPED":
@@ -241,40 +269,54 @@ export default function AdminDashboard() {
 
                         <td className="p-5">
                           <span className={`px-3 py-1 rounded-full text-xs font-extrabold ${getStatusStyle(order.status)}`}>
-                            {order.status || "PENDING"}
+                            {formatStatus(order.status)}
                           </span>
                         </td>
 
                         <td className="p-5 flex gap-2 justify-center items-center">
-                          {/* Pending Button */}
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => updateStatus(order.id, "pending")}
-                            className="px-4 py-2 text-xs font-black bg-amber-400 hover:bg-amber-500 text-slate-800 rounded-2xl shadow-md border-none transition-all"
-                          >
-                            Pending
-                          </motion.button>
+                          {formatStatus(order.status) === "COMPLETED" ? (
+                            /* Delete Button (Only for Completed orders) */
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleDeleteOrder(order.id)}
+                              className="px-4 py-2 text-xs font-black bg-rose-500 hover:bg-rose-600 text-white rounded-2xl shadow-md border-none transition-all flex items-center gap-1"
+                            >
+                              Delete 🗑️
+                            </motion.button>
+                          ) : (
+                            <>
+                              {/* Pending Button */}
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => updateStatus(order.id, "pending")}
+                                className="px-4 py-2 text-xs font-black bg-amber-400 hover:bg-amber-500 text-slate-800 rounded-2xl shadow-md border-none transition-all"
+                              >
+                                Pending
+                              </motion.button>
 
-                          {/* Shipped Button */}
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => updateStatus(order.id, "shipped")}
-                            className="px-4 py-2 text-xs font-black bg-blue-500 hover:bg-blue-600 text-white rounded-2xl shadow-md border-none transition-all"
-                          >
-                            Shipped
-                          </motion.button>
+                              {/* Shipped Button */}
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => updateStatus(order.id, "shipped")}
+                                className="px-4 py-2 text-xs font-black bg-blue-500 hover:bg-blue-600 text-white rounded-2xl shadow-md border-none transition-all"
+                              >
+                                Shipped
+                              </motion.button>
 
-                          {/* Done/Completed Button */}
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => updateStatus(order.id, "completed")}
-                            className="px-4 py-2 text-xs font-black bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-md border-none transition-all"
-                          >
-                            Done
-                          </motion.button>
+                              {/* Done/Completed Button */}
+                              <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => updateStatus(order.id, "completed")}
+                                className="px-4 py-2 text-xs font-black bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-md border-none transition-all"
+                              >
+                                Done
+                              </motion.button>
+                            </>
+                          )}
                         </td>
                       </motion.tr>
                     ))
