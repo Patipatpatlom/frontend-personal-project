@@ -62,6 +62,12 @@ const CustomCake = () => {
   const handleConfirm = (e) => {
     e.preventDefault();
 
+    if (!cake) {
+      alert("กรุณาเลือกเค้กก่อนทำการสั่งซื้อ 🎂");
+      navigate("/shop");
+      return;
+    }
+
     const finalOrder = {
       cakeId: cake?.id,
       cakeName: cake?.name,
@@ -74,7 +80,7 @@ const CustomCake = () => {
       pickupTime: selectedTime,
     };
 
-    console.log(cake.name);
+    console.log(cake?.name);
     console.log("ADD TO CART:", finalOrder);
 
     addToCart(finalOrder); // 🔥 สำคัญที่สุด
