@@ -89,12 +89,12 @@ const CustomCake = () => {
   };
 
   return (
-    <div className="flex h-screen w-full bg-[url('/src/assets/cake.png')] bg-accent-content">
+    <div className="min-h-screen w-full bg-[url('/src/assets/cake.png')] bg-cover bg-center overflow-y-auto">
       {/* <Header /> */}
 
-      <main className="max-w-7xl mx-auto pt-10 px-6 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <main className="max-w-7xl mx-auto pt-6 px-4 md:px-6 pb-20 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
         {/* LEFT SIDE: Preview */}
-        <div className="sticky top-28 bg-white/80 backdrop-blur-sm rounded-[50px] p-10 border-4 border-white shadow-2xl flex flex-col items-center">
+        <div className="lg:sticky lg:top-28 bg-white/80 backdrop-blur-sm rounded-[32px] lg:rounded-[50px] p-6 lg:p-10 border-4 border-white shadow-2xl flex flex-col items-center">
           <div className="bg-pink-100 text-pink-500 px-6 py-2 rounded-full font-black text-sm mb-8 uppercase tracking-widest">
             Preview Your Cake
           </div>
@@ -107,7 +107,7 @@ const CustomCake = () => {
                 cake?.image ||
                 "https://images.unsplash.com/photo-1578985543162-ea9956926578?q=80&w=500&auto=format&fit=crop"
               }
-              className="w-full max-w-[400px] aspect-square object-cover rounded-full shadow-[0_20px_50px_rgba(255,182,193,0.4)] border-8 border-white"
+              className="w-full max-w-[220px] md:max-w-[320px] lg:max-w-[400px] aspect-square object-cover rounded-full shadow-[0_20px_50px_rgba(255,182,193,0.4)] border-8 border-white"
             />
             {/* แสดงข้อความจำลองบนหน้าเค้ก */}
             {cakeDecor && (
@@ -130,7 +130,7 @@ const CustomCake = () => {
         </div>
 
         {/* RIGHT SIDE: Options */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-[50px] p-10 border-4 border-white shadow-2xl space-y-8">
+        <div className="bg-white/80 backdrop-blur-sm rounded-[32px] lg:rounded-[50px] p-6 lg:p-10 border-4 border-white shadow-2xl space-y-8">
           <div className="flex items-center justify-between border-b border-pink-100 pb-6">
             <h2 className="text-3xl font-black text-[#83002D] italic uppercase">
               Customize
