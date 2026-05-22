@@ -17,7 +17,7 @@ export default function CakeShop(props) {
     };
     
     return (
-        <div className="p-6 grid grid-cols-3 gap-6">
+        <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
       {cakes.map((cake) => (
           <div key={cake.id} className="bg-white p-4 rounded-xl shadow">
 

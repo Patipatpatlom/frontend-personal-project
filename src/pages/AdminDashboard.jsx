@@ -193,7 +193,7 @@ export default function AdminDashboard() {
         </motion.div>
 
         {/* METRICS ROW */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
             { label: "Total Orders", count: totalCount, icon: Package, color: "text-purple-600 bg-purple-50" },
             { label: "Pending", count: pendingCount, icon: Clock, color: "text-amber-600 bg-amber-50" },

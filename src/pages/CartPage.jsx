@@ -96,7 +96,7 @@ export default function CartPage() {
   {cart.map((item, index) => (
     <div
       key={index} // ใช้ index เพื่อความแม่นยำในการระบุแถว
-      className="flex gap-4 items-center bg-white p-4 rounded-xl shadow border border-pink-50"
+      className="flex flex-col sm:flex-row gap-4 items-center sm:items-center bg-white p-4 rounded-xl shadow border border-pink-50 relative"
     >
       {/* 🖼️ 1. รูปภาพเค้ก */}
       <div className="w-24 h-24 flex-shrink-0">
@@ -141,7 +141,7 @@ export default function CartPage() {
       {/* ❌ 3. ปุ่มลบ */}
       <button
         onClick={() => removeFromCart(index)}
-        className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all"
+        className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all absolute top-2 right-2 sm:static sm:top-auto sm:right-auto"
         title="Remove item"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
